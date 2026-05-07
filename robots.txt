@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /.claude/
+Disallow: /.vscode/
+
+Sitemap: https://nabil-elouchikli-sud.fr/sitemap.xml
