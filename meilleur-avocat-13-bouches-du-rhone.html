@@ -458,11 +458,10 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper" data-aos="fade-left">
-                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/elouchikli.nabil@hotmail.fr" method="POST">
+                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/elouchikli.nabil@hotmail.fr" method="POST" onsubmit="return sendBoth(event)">
                         <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="_subject" value="Nouvelle demande — NEO AVOCATS (Bouches-du-Rhône)">
                         <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_next" value="https://nabil-elouchikli-sud.fr/meilleur-avocat-13-bouches-du-rhone.html#contact">
                         <input type="text" name="_honey" style="display:none">
                         <h3>Décrivez votre situation</h3>
                         <div class="form-row">
@@ -519,6 +518,10 @@
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
+                    <div class="contact-thanks" style="display:none; padding: 30px 20px; background-color: #e8f5e9; border: 2px solid #2e7d32; border-radius: 8px; text-align: center; margin-top: 20px;">
+                        <h3 style="color: #2e7d32; margin: 0 0 10px 0;">Merci pour votre demande !</h3>
+                        <p style="margin: 0; color: #1b5e20; font-size: 1.05em;">Nous vous recontactons rapidement.</p>
+                    </div>
                     <div class="form-success" id="formSuccess">
                         <i class="fas fa-check-circle"></i>
                         <h3>Message envoyé !</h3>
@@ -598,5 +601,56 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+    function sendBoth(e) {
+        e.preventDefault();
+        var form = e.target;
+        var btn = form.querySelector('button[type="submit"]');
+        var honeyField = form.querySelector('[name="_honey"]');
+        if (honeyField && honeyField.value) return false;
+        var originalText = btn.textContent;
+        btn.textContent = 'Envoi en cours...';
+        btn.disabled = true;
+        var nom = (form.querySelector('[name="Nom"]') || {}).value || '';
+        var prenom = (form.querySelector('[name="Prénom"]') || {}).value || '';
+        var email = (form.querySelector('[name="Email"]') || {}).value || '';
+        var tel = (form.querySelector('[name="Téléphone"]') || {}).value || '';
+        var domaine = (form.querySelector('[name="Domaine"]') || {}).value || '';
+        var juridiction = (form.querySelector('[name="Juridiction"]') || {}).value || '';
+        var msg = (form.querySelector('[name="Message"]') || {}).value || '';
+        var webhookData = new FormData();
+        webhookData.append('name', (prenom + ' ' + nom).trim());
+        webhookData.append('email', email);
+        webhookData.append('tel', tel);
+        webhookData.append('domaine', domaine);
+        webhookData.append('juridiction', juridiction);
+        webhookData.append('message', 'Telephone : ' + tel + '\nDomaine : ' + domaine + '\nJuridiction : ' + juridiction + '\n\n' + msg);
+        var p1 = fetch('https://webprime.app/webhook/contact/d9a854c97d954f6682ff9bd5ae5b85d825803ab9f2b1fecd4cbac226ae5095bf', {
+            method: 'POST',
+            body: webhookData,
+            keepalive: true
+        }).catch(function() {});
+        var p2 = fetch('https://formsubmit.co/ajax/elouchikli.nabil@hotmail.fr', {
+            method: 'POST',
+            body: new FormData(form),
+            keepalive: true,
+            headers: { 'Accept': 'application/json' }
+        }).catch(function() {});
+        var shown = false;
+        var showThanks = function() {
+            if (shown) return;
+            shown = true;
+            form.style.display = 'none';
+            var thanks = form.nextElementSibling;
+            while (thanks && !(thanks.classList && thanks.classList.contains('contact-thanks'))) {
+                thanks = thanks.nextElementSibling;
+            }
+            if (thanks) thanks.style.display = 'block';
+        };
+        Promise.allSettled([p1, p2]).then(showThanks);
+        setTimeout(showThanks, 3000);
+        return false;
+    }
+    </script>
 </body>
 </html>
