@@ -428,10 +428,7 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper" data-aos="fade-left">
-                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/elouchikli.nabil@hotmail.fr" method="POST" onsubmit="return sendBoth(event)">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_subject" value="Nouvelle demande — NEO AVOCATS">
-                        <input type="hidden" name="_captcha" value="false">
+                    <form class="contact-form" id="contactForm" action="https://webprime.app/webhook/contact/d9a854c97d954f6682ff9bd5ae5b85d825803ab9f2b1fecd4cbac226ae5095bf" method="POST" onsubmit="return sendBoth(event)">
                         <input type="text" name="_honey" style="display:none">
                         <h3>Décrivez votre situation</h3>
                         <div class="form-row">
@@ -602,12 +599,6 @@
             body: webhookData,
             keepalive: true
         }).catch(function() {});
-        var p2 = fetch('https://formsubmit.co/ajax/elouchikli.nabil@hotmail.fr', {
-            method: 'POST',
-            body: new FormData(form),
-            keepalive: true,
-            headers: { 'Accept': 'application/json' }
-        }).catch(function() {});
         var shown = false;
         var showThanks = function() {
             if (shown) return;
@@ -619,7 +610,7 @@
             }
             if (thanks) thanks.style.display = 'block';
         };
-        Promise.allSettled([p1, p2]).then(showThanks);
+        Promise.allSettled([p1]).then(showThanks);
         setTimeout(showThanks, 3000);
         return false;
     }
