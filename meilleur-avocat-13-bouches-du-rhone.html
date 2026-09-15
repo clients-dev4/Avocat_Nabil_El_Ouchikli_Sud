@@ -464,11 +464,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="nom">Nom *</label>
-                                <input type="text" id="nom" name="Nom" required placeholder="Votre nom">
+                                <input type="text" id="nom" name="Nom" required placeholder="Votre nom" pattern="[A-Za-zÀ-ÿ' -]{2,60}" title="Indiquez votre nom (lettres uniquement, 2 a 60 caracteres)">
                             </div>
                             <div class="form-group">
                                 <label for="prenom">Prénom *</label>
-                                <input type="text" id="prenom" name="Prénom" required placeholder="Votre prénom">
+                                <input type="text" id="prenom" name="Prénom" required placeholder="Votre prénom" pattern="[A-Za-zÀ-ÿ' -]{2,60}" title="Indiquez votre prenom (lettres uniquement, 2 a 60 caracteres)">
                             </div>
                         </div>
                         <div class="form-row">
